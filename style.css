@@ -1,0 +1,12 @@
+.meter {
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 100px;
+  width: 50px;
+}
+
+.module {
+  background-color: #eee;
+  border-radius: 10px;
+  padding: 20px;
+}
