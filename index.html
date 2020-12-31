@@ -9,6 +9,28 @@
   <body>
     <div class="container">
       <h1>Photovoltaik Simualtor</h1>
+
+      Leistung angegeben alle
+      <input type="number" id="time_resolution" value="15">
+      Minuten
+      <br>
+      Photovoltaik
+      <input type="file" name="file" id="photovoltaik">
+      <br>
+      Verbrauch Haushalt
+      <input type="file" name="file" id="household_consumption">
+
+      <input type="submit" onclick="start_simulation();return false;">
+      <br>
+      <br>
+      Total elecritity cost:
+      <input value="0" name="total_elecritity_cost">€
+      <br>
+      Einspeisevergütung:
+      <input value="0" name="total_elecritity_revenue">€
+      <br>
+      Vergangene Tage:
+      <input value="0" name="days_passed">€
       <div class="row">
         <div class="col-md-4">
           <div class="module">
@@ -24,7 +46,7 @@
         <div class="col-md-4">
           <div class="module">
             Stromspeicher
-            <input value="10" name="battery_kwh">kWh
+            <input value="14" name="battery_kwh">kWh
             <div class="meter meter_battery_kwh">
               <div class="fill"></div>
               <div class="text"></div>
@@ -45,9 +67,23 @@
 
         <div class="col-md-4">
           <div class="module">
-            Stromverbrauch
-            <input value="1" name="usage_kw">kw
-            <div class="meter usage_kw">
+            Stromverbrauch Haushalt
+            <input value="0" name="household_consumption_kw">Watt
+            <div class="meter household_consumption_kw">
+              <div class="fill"></div>
+              <div class="text"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="module">
+            Stromnetz
+            <input value="0" name="grid_kw">Watt
+            Import<input value="0.25" name="price_kwh">€
+            <br>
+            Export<input value="0.08" name="price_export_kwh">€
+            <div class="meter grid_kw">
               <div class="fill"></div>
               <div class="text"></div>
             </div>
