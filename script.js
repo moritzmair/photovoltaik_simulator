@@ -28,11 +28,6 @@ function start_simulation(){
   simulate_one_section();
 }
 
-function convert(an_array){
-  result = '[' + an_array.join(', ') + ']';
-  $('#textarea').html(result);
-}
-
 $( document ).ready(function() {
 
   // read in data files
@@ -62,7 +57,7 @@ $( document ).ready(function() {
 
 function simulate_one_section(){
   current_usage = household_consumption[pointer]/consumption_factor;
-  $('.meter_household_consumption > .text').html(Math.round(current_usage) + 'watt').css('height', (current_usage/(household_consumption_year/4)*100)+'%');
+  $('.meter_household_consumption > .text').html(Math.round(current_usage) + 'watt').css('height', (current_usage/1000*100)+'%');
 
   current_photovoltaik = photovoltaik[pointer]/photovoltaik_factor;
 
@@ -81,18 +76,21 @@ function simulate_one_section(){
 
   if(current_need < 0){
     electricity_cost = electricity_cost + (current_need*-1) * $('input[name=price_kwh]').val();
+    $('.meter_grid_kw_import > .text').html(Math.round(current_need*1000) + ' Watt').css('height', (current_need*-1*100)+'%');
+    $('.meter_grid_kw_export > .text').html(Math.round(current_need*1000) + ' Watt').css('height', '0');
   }else{
     electricity_revenue = electricity_revenue + current_need * $('input[name=price_export_kwh]').val();
+    $('.meter_grid_kw_export > .text').html(Math.round(current_need*1000) + ' Watt').css('height', (current_need/10*100)+'%');
+    $('.meter_grid_kw_import > .text').html(Math.round(current_need*1000) + ' Watt').css('height', '0');
   }
 
   $('input[name=total_elecritity_cost]').val(Math.round(electricity_cost));
   $('input[name=total_elecritity_revenue]').val(Math.round(electricity_revenue));
 
-  $('input[name=grid_kw]').val(Math.round(current_need*1000));
-  $('.meter_battery_kwh > .text').html(Math.round(battery*10)/10 + ' kwh').css('height', (battery/battery_max_size*100)+'%');;
+  $('.meter_battery_kwh > .text').html(Math.round(battery*10)/10 + ' kwh').css('height', (battery/battery_max_size*100)+'%');
 
   $('input[name=kw_passed]').val(parseInt(pointer/(24*60/time_resolution*7)));
 
-  setTimeout(function(){ simulate_one_section(); },10);
+  setTimeout(function(){ simulate_one_section(); },1);
 }
 

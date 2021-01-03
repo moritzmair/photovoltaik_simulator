@@ -11,32 +11,6 @@
     <div class="container">
       <h1>Photovoltaik Simualtor</h1>
 
-      <div style="display:none;">
-        Leistung angegeben alle
-        <input type="number" id="time_resolution" value="15">
-        Minuten
-        <br>
-
-        Eigene Daten für die Simulation nutzen (optional)
-        <br>
-        Photovoltaik
-        <input type="file" name="file" id="photovoltaik">
-        <br>
-        Verbrauch Haushalt
-        <input type="file" name="file" id="household_consumption">
-      </div>
-
-      <input type="submit" value="Simulation starten" onclick="start_simulation();return false;">
-      <br>
-      <br>
-      Total elecritity cost:
-      <input value="0" disabled name="total_elecritity_cost">€
-      <br>
-      Einspeisevergütung:
-      <input value="0" disabled name="total_elecritity_revenue">€
-      <br>
-      Kalenderwoche:
-      <input value="0" disabled name="kw_passed">
       <div class="row">
         <div class="col-md-2">
           <div class="module">
@@ -45,7 +19,7 @@
               <div class="text"></div>
             </div>
             Photovoltaik
-            <input value="30" name="photovoltaik_kwp">kWp
+            <input value="10" name="photovoltaik_kwp">kWp
           </div>
         </div>
 
@@ -77,28 +51,63 @@
               <div class="fill"></div>
               <div class="text"></div>
             </div>
-            Stromverbrauch Haushalt pro Jahr
-            <input value="4000" name="household_consumption_kwh">kWh
+            Stromverbrauch
+            <input value="5000" name="household_consumption_kwh">kWh pro Jahr
           </div>
         </div>
 
         <div class="col-md-2">
           <div class="module">
-            <div class="meter grid_kw">
+            <div class="meter meter_grid_kw_export">
               <div class="fill"></div>
               <div class="text"></div>
             </div>
-            Stromnetz
-            <input value="0" name="grid_kw">Watt
-            Import<input value="0.25" name="price_kwh">€
+            Stromnetz Export
             <br>
-            Export<input value="0.08" name="price_export_kwh">€
+            <input value="0.08" name="price_export_kwh">€
           </div>
         </div>
-        Data from https://data.open-power-system-data.org/household_data/
 
-        <textarea id="textarea"></textarea>
+        <div class="col-md-2">
+          <div class="module">
+            <div class="meter meter_grid_kw_import">
+              <div class="fill"></div>
+              <div class="text"></div>
+            </div>
+            Stromnetz Import
+            <br>
+            <input value="0.25" name="price_kwh">€
+          </div>
+        </div>
       </div>
+      <div style="display:none;">
+        Leistung angegeben alle
+        <input type="number" id="time_resolution" value="15">
+        Minuten
+        <br>
+
+        Eigene Daten für die Simulation nutzen (optional)
+        <br>
+        Photovoltaik
+        <input type="file" name="file" id="photovoltaik">
+        <br>
+        Verbrauch Haushalt
+        <input type="file" name="file" id="household_consumption">
+      </div>
+
+      <input type="submit" value="Simulation starten" onclick="start_simulation();return false;">
+      <br>
+      <br>
+      Total elecritity cost:
+      <input value="0" disabled name="total_elecritity_cost">€
+      <br>
+      Einspeisevergütung:
+      <input value="0" disabled name="total_elecritity_revenue">€
+      <br>
+      Kalenderwoche:
+      <input value="0" disabled name="kw_passed">
+
+      Data from https://data.open-power-system-data.org/household_data/
     </div>
   </body>
 </html>
