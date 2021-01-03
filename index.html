@@ -30,7 +30,7 @@
               <div class="text"></div>
             </div>
             Stromspeicher
-            <input value="14" name="battery_kwh">kWh
+            <input value="10" name="battery_kwh">kWh nutzbar
           </div>
         </div>
 
@@ -85,7 +85,6 @@
         <input type="number" id="time_resolution" value="15">
         Minuten
         <br>
-
         Eigene Daten für die Simulation nutzen (optional)
         <br>
         Photovoltaik
@@ -96,6 +95,7 @@
       </div>
 
       <input type="submit" value="Simulation starten" onclick="start_simulation();return false;">
+      <input type="checkbox" checked id="fast_mode"> schnelle simulation
       <br>
       <br>
       Total elecritity cost:
@@ -106,7 +106,9 @@
       <br>
       Kalenderwoche:
       <input value="0" disabled name="kw_passed">
-
+      <br>
+      <div class="results"></div>
+      <br>
       Data from https://data.open-power-system-data.org/household_data/
     </div>
   </body>

@@ -11,6 +11,10 @@
   padding: 20px;
 }
 
+.module input {
+  width: 100%;
+}
+
 .text {
   background-color: coral;
   position: absolute;
@@ -21,4 +25,12 @@
 .module .meter {
   overflow: hidden;
   position: relative;
+}
+
+.one_result {
+  margin: 5px;
+  background-color: #eee;
+  padding: 5px;
+  border-radius: 5px;
+  display: inline-block;
 }
