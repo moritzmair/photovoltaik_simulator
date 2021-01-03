@@ -4,92 +4,100 @@
     <link href="lib/bootstrap.min.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <script src="lib/jquery-3.5.1.min.js"></script>
+    <script src="data/data.js"></script>
     <script src="script.js"></script>
   </head>
   <body>
     <div class="container">
       <h1>Photovoltaik Simualtor</h1>
 
-      Leistung angegeben alle
-      <input type="number" id="time_resolution" value="15">
-      Minuten
-      <br>
-      Photovoltaik
-      <input type="file" name="file" id="photovoltaik">
-      <br>
-      Verbrauch Haushalt
-      <input type="file" name="file" id="household_consumption">
+      <div style="display:none;">
+        Leistung angegeben alle
+        <input type="number" id="time_resolution" value="15">
+        Minuten
+        <br>
 
-      <input type="submit" onclick="start_simulation();return false;">
+        Eigene Daten für die Simulation nutzen (optional)
+        <br>
+        Photovoltaik
+        <input type="file" name="file" id="photovoltaik">
+        <br>
+        Verbrauch Haushalt
+        <input type="file" name="file" id="household_consumption">
+      </div>
+
+      <input type="submit" value="Simulation starten" onclick="start_simulation();return false;">
       <br>
       <br>
       Total elecritity cost:
-      <input value="0" name="total_elecritity_cost">€
+      <input value="0" disabled name="total_elecritity_cost">€
       <br>
       Einspeisevergütung:
-      <input value="0" name="total_elecritity_revenue">€
+      <input value="0" disabled name="total_elecritity_revenue">€
       <br>
-      Vergangene Tage:
-      <input value="0" name="days_passed">€
+      Kalenderwoche:
+      <input value="0" disabled name="kw_passed">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-2">
           <div class="module">
-            Photovoltaik
-            <input value="10" name="photovoltaik_kwp">kWp
             <div class="meter meter_photovoltaik_kwp">
               <div class="fill"></div>
               <div class="text"></div>
             </div>
+            Photovoltaik
+            <input value="30" name="photovoltaik_kwp">kWp
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
           <div class="module">
-            Stromspeicher
-            <input value="14" name="battery_kwh">kWh
             <div class="meter meter_battery_kwh">
               <div class="fill"></div>
               <div class="text"></div>
             </div>
+            Stromspeicher
+            <input value="14" name="battery_kwh">kWh
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2" style="display:none">
           <div class="module">
-            Wärmespeicher
-            <input value="2" name="water_qm">qm
             <div class="meter meter_water_qm">
               <div class="fill"></div>
               <div class="text"></div>
             </div>
+            Wärmespeicher
+            <input value="2" name="water_qm">qm
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
           <div class="module">
-            Stromverbrauch Haushalt
-            <input value="0" name="household_consumption_kw">Watt
-            <div class="meter household_consumption_kw">
+            <div class="meter meter_household_consumption">
               <div class="fill"></div>
               <div class="text"></div>
             </div>
+            Stromverbrauch Haushalt pro Jahr
+            <input value="4000" name="household_consumption_kwh">kWh
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
           <div class="module">
+            <div class="meter grid_kw">
+              <div class="fill"></div>
+              <div class="text"></div>
+            </div>
             Stromnetz
             <input value="0" name="grid_kw">Watt
             Import<input value="0.25" name="price_kwh">€
             <br>
             Export<input value="0.08" name="price_export_kwh">€
-            <div class="meter grid_kw">
-              <div class="fill"></div>
-              <div class="text"></div>
-            </div>
           </div>
         </div>
         Data from https://data.open-power-system-data.org/household_data/
+
+        <textarea id="textarea"></textarea>
       </div>
     </div>
   </body>

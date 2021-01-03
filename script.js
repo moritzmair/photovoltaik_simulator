@@ -2,8 +2,8 @@ var water_temp = 20;
 var battery = 0;
 var max_photovoltaik;
 
-var photovoltaik;
-var household_consumption;
+var household_consumption_year;
+
 var pointer = 0;
 
 var electricity_cost = 0;
@@ -13,12 +13,27 @@ var electricity_revenue = 0;
 var time_resolution = 1;
 
 function start_simulation(){
+  household_consumption_year = parseInt($('input[name=household_consumption_kwh]').val());
+
+  time_resolution = document.getElementById('time_resolution').value
+
+  max_photovoltaik = Math.max.apply(Math, photovoltaik);
+
+  year_consumption_household = household_consumption.reduce((pv, cv) => pv + cv, 0)/1000;
+  photovoltaik_installed = $('input[name=photovoltaik_kwp]').val()*1000;
+
+  consumption_factor = year_consumption_household / household_consumption_year;
+  photovoltaik_factor = max_photovoltaik / photovoltaik_installed;
+
   simulate_one_section();
 }
 
+function convert(an_array){
+  result = '[' + an_array.join(', ') + ']';
+  $('#textarea').html(result);
+}
+
 $( document ).ready(function() {
-  console.log('document ready');
-  time_resolution = document.getElementById('time_resolution').value
 
   // read in data files
   document.getElementById('photovoltaik').onchange = function(){
@@ -46,12 +61,12 @@ $( document ).ready(function() {
 });
 
 function simulate_one_section(){
-  current_usage = household_consumption[pointer];
-  $('input[name=household_consumption_kw]').val(current_usage);
+  current_usage = household_consumption[pointer]/consumption_factor;
+  $('.meter_household_consumption > .text').html(Math.round(current_usage) + 'watt').css('height', (current_usage/(household_consumption_year/4)*100)+'%');
 
-  current_photovoltaik = Math.round(photovoltaik[pointer]/(max_photovoltaik/1000)*$('input[name=photovoltaik_kwp]').val());
+  current_photovoltaik = photovoltaik[pointer]/photovoltaik_factor;
 
-  $('.meter_photovoltaik_kwp > .text').html(current_photovoltaik + ' watt');
+  $('.meter_photovoltaik_kwp > .text').html(current_photovoltaik + ' watt').css('height', (current_photovoltaik/photovoltaik_installed*100)+'%');
   pointer++;
 
   battery_max_size = $('input[name=battery_kwh]').val();
@@ -70,15 +85,14 @@ function simulate_one_section(){
     electricity_revenue = electricity_revenue + current_need * $('input[name=price_export_kwh]').val();
   }
 
-  $('input[name=total_elecritity_cost]').val(electricity_cost);
-  $('input[name=total_elecritity_revenue]').val(electricity_revenue);
+  $('input[name=total_elecritity_cost]').val(Math.round(electricity_cost));
+  $('input[name=total_elecritity_revenue]').val(Math.round(electricity_revenue));
 
   $('input[name=grid_kw]').val(Math.round(current_need*1000));
-  $('.meter_battery_kwh > .text').html(Math.round(battery*10)/10 + ' kwh');
+  $('.meter_battery_kwh > .text').html(Math.round(battery*10)/10 + ' kwh').css('height', (battery/battery_max_size*100)+'%');;
 
+  $('input[name=kw_passed]').val(parseInt(pointer/(24*60/time_resolution*7)));
 
-  $('input[name=days_passed]').val(parseInt(pointer/(24*60/time_resolution)));
-
-  setTimeout(function(){ simulate_one_section(); }, 0);
+  setTimeout(function(){ simulate_one_section(); },10);
 }
 

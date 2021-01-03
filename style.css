@@ -1,7 +1,7 @@
 .meter {
   border: 1px solid black;
   border-radius: 5px;
-  height: 100px;
+  height: 200px;
   width: 50px;
 }
 
@@ -9,4 +9,16 @@
   background-color: #eee;
   border-radius: 10px;
   padding: 20px;
+}
+
+.text {
+  background-color: coral;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.module .meter {
+  overflow: hidden;
+  position: relative;
 }
