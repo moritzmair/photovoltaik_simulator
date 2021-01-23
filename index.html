@@ -29,8 +29,8 @@
               <div class="fill"></div>
               <div class="text"></div>
             </div>
-            Stromspeicher
-            <input value="10" name="battery_kwh">kWh nutzbar
+            Battery capacity
+            <input value="10" name="battery_kwh">kWh usable
           </div>
         </div>
 
@@ -51,8 +51,8 @@
               <div class="fill"></div>
               <div class="text"></div>
             </div>
-            Stromverbrauch
-            <input value="5000" name="household_consumption_kwh">kWh pro Jahr
+            Elecritity usage
+            <input value="5000" name="household_consumption_kwh">kWh per year
           </div>
         </div>
 
@@ -62,7 +62,7 @@
               <div class="fill"></div>
               <div class="text"></div>
             </div>
-            Stromnetz Export
+            Power grid export
             <br>
             <input value="0.08" name="price_export_kwh">€
           </div>
@@ -74,42 +74,47 @@
               <div class="fill"></div>
               <div class="text"></div>
             </div>
-            Stromnetz Import
+            Power grid import
             <br>
             <input value="0.25" name="price_kwh">€
           </div>
         </div>
       </div>
       <div style="display:none;">
-        Leistung angegeben alle
+        Power consumption for every
         <input type="number" id="time_resolution" value="15">
-        Minuten
+        Minutes
         <br>
-        Eigene Daten für die Simulation nutzen (optional)
+        User your own data (optional)
         <br>
         Photovoltaik
         <input type="file" name="file" id="photovoltaik">
         <br>
-        Verbrauch Haushalt
+        Household usage
         <input type="file" name="file" id="household_consumption">
       </div>
 
-      <input type="submit" value="Simulation starten" onclick="start_simulation();return false;">
-      <input type="checkbox" checked id="fast_mode"> schnelle simulation (simuliert einen Tag pro Monat und rechnet das Ergebnis hoch)
+      <input type="submit" value="start simulation" onclick="start_simulation();return false;">
+      <input type="checkbox" checked id="fast_mode"> fast simulation (only simulates one day per month)
       <br>
       <br>
-      Total elecritity cost:
+      elecritity cost:
       <input value="0" disabled name="total_elecritity_cost">€
       <br>
-      Einspeisevergütung:
+      elecritity earnings:
       <input value="0" disabled name="total_elecritity_revenue">€
       <br>
-      Kalenderwoche:
+      Calendar week:
       <input value="0" disabled name="kw_passed">
       <br>
       <div class="results"></div>
       <br>
-      Data from https://data.open-power-system-data.org/household_data/
+      Household data from <a target="_blank" href="https://data.open-power-system-data.org/household_data/">https://data.open-power-system-data.org/household_data/</a>
+      <br>
+      <br>
+      Created by Moritz Mair - Jungfernstr. 15 - 64291 Darmstadt.
+      <br>
+      Contact me on Telegram: <a target="_blank" href="https://t.me/Master92">Master92</a>
     </div>
   </body>
 </html>

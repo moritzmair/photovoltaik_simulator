@@ -146,11 +146,9 @@ function end_simulation(){
   electricity_cost = 0;
   electricity_revenue = 0;
 
-
-
   pointer = 0;
 
-  $('.results').append('<div class="one_result">Kosten: '+(total_export_cost-total_import_revenue)+' €<br>Photovoltaik: '+$('input[name=photovoltaik_kwp]').val()+' kWp<br>Stromspeicher: '+$('input[name=battery_kwh]').val()+' kWh<br>Stromverbrauch: '+$('input[name=household_consumption_kwh]').val()+' kWh<br>erzeugte kwh: '+ Math.round(total_photovoltaik/1000)+' kWh<br>verbrauchte kwh: '+ Math.round(total_household_consumption/1000)+' kWh<br>importierte kwh: '+ Math.round(total_import/1000)+' kWh<br>exportierte kwh: '+ Math.round(total_export/1000)+' kWh<br>Eigenberbrauchsanteil: '+Math.round(100-(total_export/total_photovoltaik*100))+'%</div>');
+  $('.results').append('<div class="one_result">Kosten: '+(total_export_cost-total_import_revenue)+' €<br>Photovoltaik: '+$('input[name=photovoltaik_kwp]').val()+' kWp<br>Battery size: '+$('input[name=battery_kwh]').val()+' kWh<br>Electriciy usage: '+$('input[name=household_consumption_kwh]').val()+' kWh<br>produced kwh: '+ Math.round(total_photovoltaik/1000)+' kWh<br>used kwh: '+ Math.round(total_household_consumption/1000)+' kWh<br>imported kwh: '+ Math.round(total_import/1000)+' kWh<br>exported kwh: '+ Math.round(total_export/1000)+' kWh<br>Self consumption rate: '+Math.round(100-(total_export/total_photovoltaik*100))+'%</div>');
 
   total_photovoltaik = 0;
   total_household_consumption = 0;
