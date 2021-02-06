@@ -10,7 +10,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Photovoltaik Simualtor</h1>
+      <h1>Photovoltaik Simulator</h1>
 
       <div class="row">
         <div class="col-md-2">
@@ -59,6 +59,17 @@
 
         <div class="col-md-2">
           <div class="module">
+            <div class="meter meter_heat_pump">
+              <div class="fill"></div>
+              <div class="text"></div>
+            </div>
+            Heat Pump usage
+            <input value="10000" name="heat_pump_kwh">kWh per year
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="module">
             <div class="meter meter_grid_kw_export">
               <div class="fill"></div>
               <div class="text"></div>
@@ -94,7 +105,10 @@
         Household usage
         <input type="file" name="file" id="household_consumption">
       </div>
+      <div class="chart">
 
+      </div>
+      <br>
       <input type="submit" value="start simulation" onclick="start_simulation();return false;">
       <input type="checkbox" checked id="fast_mode"> fast simulation (only simulates one day per month)
       <br>
@@ -110,12 +124,15 @@
       <br>
       <div class="results"></div>
       <br>
-      Household data from <a target="_blank" href="https://data.open-power-system-data.org/household_data/">https://data.open-power-system-data.org/household_data/</a>
-      <br>
-      <br>
-      Created by Moritz Mair - Jungfernstr. 15 - 64291 Darmstadt.
-      <br>
-      Contact me on Telegram: <a target="_blank" href="https://t.me/Master92">Master92</a>
+      <div class="footer">
+        Household data from <a target="_blank" href="https://data.open-power-system-data.org/household_data/">https://data.open-power-system-data.org/household_data/</a>
+        -
+        Want to change something? This project is available on <a target="_blank" href="https://github.com/moritzmair/photovoltaik_simulator">Github</a>
+        <br>
+        Created by Moritz Mair - Jungfernstr. 15 - 64291 Darmstadt.
+        -
+        Contact me on Telegram: <a target="_blank" href="https://t.me/Master92">Master92</a>
+      </div>
     </div>
   </body>
 </html>

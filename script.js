@@ -3,6 +3,7 @@ var battery = 0;
 var max_photovoltaik;
 
 var household_consumption_year;
+var heat_pump_consumption_year;
 
 var pointer = 0;
 
@@ -14,11 +15,11 @@ var fast_simulation_days = 30;
 
 var total_photovoltaik = 0;
 var total_household_consumption = 0;
+var total_heat_pump_consumption = 0;
 var total_export = 0;
 var total_import = 0;
 
-
-var time_resolution = 15;
+var time_resolution = 15; // minutes
 
 $( document ).ready(function() {
   // read in data files
@@ -51,23 +52,32 @@ function start_simulation(){
 
   household_consumption_year = parseInt($('input[name=household_consumption_kwh]').val());
 
+  heat_pump_consumption_year = parseInt($('input[name=heat_pump_kwh]').val());
+
   time_resolution = document.getElementById('time_resolution').value
 
   max_photovoltaik = Math.max.apply(Math, photovoltaik);
 
   year_consumption_household = household_consumption.reduce((pv, cv) => pv + cv, 0)/1000;
+  year_consumption_heat_pump = heat_pump_data.reduce((pv, cv) => pv + cv, 0)/1000;
   photovoltaik_installed = $('input[name=photovoltaik_kwp]').val()*1000;
 
-  consumption_factor = (year_consumption_household/ 60 * time_resolution) / household_consumption_year;
+  consumption_factor_household = (year_consumption_household/ 60 * time_resolution) / household_consumption_year;
+  consumption_factor_heat_pump = (year_consumption_heat_pump/ 60 * time_resolution) / heat_pump_consumption_year;
   photovoltaik_factor = photovoltaik_installed / max_photovoltaik;
+
+  $('.chart').html('');
 
   simulate_one_section();
 }
 
 function simulate_one_section(){
 
-  current_usage = household_consumption[pointer] / consumption_factor;
-  $('.meter_household_consumption > .text').html(Math.round(current_usage) + 'watt').css('height', (current_usage/1000*100)+'%');
+  current_usage_household = household_consumption[pointer] / consumption_factor_household;
+  $('.meter_household_consumption > .text').html(Math.round(current_usage_household) + 'watt').css('height', (current_usage_household/1000*100)+'%');
+
+  current_usage_heat_pump = heat_pump_data[pointer] / consumption_factor_heat_pump;
+  $('.meter_heat_pump > .text').html(Math.round(current_usage_heat_pump) + 'watt').css('height', (current_usage_heat_pump/1000*100)+'%');
 
   current_photovoltaik = photovoltaik[pointer] * photovoltaik_factor;
 
@@ -94,7 +104,7 @@ function simulate_one_section(){
   battery_max_size = $('input[name=battery_kwh]').val();
   water_storage_size = $('input[name=meter_water_qm]').val();
 
-  current_need = current_photovoltaik - current_usage
+  current_need = current_photovoltaik - current_usage_household - current_usage_heat_pump
 
   if (battery + current_need/1000 >= 0 && battery + current_need/1000 <= battery_max_size){
     battery = battery + current_need/1000;
@@ -108,7 +118,8 @@ function simulate_one_section(){
   }
 
   total_photovoltaik = total_photovoltaik + (current_photovoltaik / 60 * time_resolution) * fast_simulation_factor;
-  total_household_consumption = total_household_consumption + (current_usage / 60 * time_resolution) * fast_simulation_factor;
+  total_household_consumption = total_household_consumption + (current_usage_household / 60 * time_resolution) * fast_simulation_factor;
+  total_heat_pump_consumption = total_heat_pump_consumption + (current_usage_heat_pump / 60 * time_resolution) * fast_simulation_factor;
 
   if(current_need < 0){
     total_import = total_import + (current_need*-1 / 60 * time_resolution) * fast_simulation_factor;
@@ -129,6 +140,8 @@ function simulate_one_section(){
 
   $('input[name=kw_passed]').val(parseInt(pointer/(24*60/time_resolution*7)));
 
+  fill_chart(current_photovoltaik, current_usage_household, current_usage_heat_pump);
+
   setTimeout(function(){ simulate_one_section(); },0);
 }
 
@@ -137,6 +150,7 @@ function end_simulation(){
   $('.meter_grid_kw_import > .text').html('').css('height', 0);
   $('.meter_grid_kw_export > .text').html('').css('height', 0);
   $('.meter_household_consumption > .text').html('').css('height', 0);
+  $('.meter_heat_pump > .text').html('').css('height', 0);
   $('.meter_photovoltaik_kwp > .text').html('').css('height', 0);
   $('.meter_battery_kwh > .text').html('').css('height', 0);
 
@@ -148,10 +162,16 @@ function end_simulation(){
 
   pointer = 0;
 
-  $('.results').append('<div class="one_result">Kosten: '+(total_export_cost-total_import_revenue)+' €<br>Photovoltaik: '+$('input[name=photovoltaik_kwp]').val()+' kWp<br>Battery size: '+$('input[name=battery_kwh]').val()+' kWh<br>Electriciy usage: '+$('input[name=household_consumption_kwh]').val()+' kWh<br>produced kwh: '+ Math.round(total_photovoltaik/1000)+' kWh<br>used kwh: '+ Math.round(total_household_consumption/1000)+' kWh<br>imported kwh: '+ Math.round(total_import/1000)+' kWh<br>exported kwh: '+ Math.round(total_export/1000)+' kWh<br>Self consumption rate: '+Math.round(100-(total_export/total_photovoltaik*100))+'%</div>');
+  $('.results').append('<div class="one_result">Kosten: '+(total_export_cost-total_import_revenue)+' €<br>Photovoltaik: '+$('input[name=photovoltaik_kwp]').val()+' kWp<br>Battery size: '+$('input[name=battery_kwh]').val()+' kWh<br>Household usage: '+household_consumption_year+' kWh<br>Heat Pump usage: '+heat_pump_consumption_year+' kWh<br>produced kwh: '+ Math.round(total_photovoltaik/1000)+' kWh<br>used kwh: '+ Math.round(total_household_consumption/1000)+' kWh<br>imported kwh: '+ Math.round(total_import/1000)+' kWh<br>exported kwh: '+ Math.round(total_export/1000)+' kWh<br>Self consumption rate: '+Math.round(100-(total_export/total_photovoltaik*100))+'%</div>');
 
   total_photovoltaik = 0;
   total_household_consumption = 0;
+  total_heat_pump_consumption = 0;
   total_export = 0;
   total_import = 0;
+}
+
+function fill_chart(current_photovoltaik, current_usage_household, current_usage_heat_pump){
+  var current_need = current_photovoltaik - current_usage_household - current_usage_heat_pump;
+  $('.chart').append('<div class="one_line"><div class="current_usage_heat_pump" style="height:'+current_usage_heat_pump/50+'px"></div><div class="current_usage_household" style="height:'+current_usage_household/50+'px"></div><div class="current_photovoltaik" style="height:'+current_photovoltaik/50+'px"></div></div>');
 }

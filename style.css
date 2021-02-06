@@ -1,3 +1,66 @@
+body {
+  background-color: #666;
+}
+
+.container {
+  background-color: #fff;
+  padding: 2% 2% 4% 2%;
+  margin-top: 10px;
+  border-radius: 10px;
+  box-shadow:  0 0 10px #222;
+  position: relative;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: #999;
+  font-size: 10px;
+  color: white;
+  border-radius: 10px;
+  padding: 1%;
+}
+
+.chart {
+  font-size: 0;
+  border: 1px solid black;
+  width: 100%;
+  height: 300px;
+  margin: 10px 0;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.one_line {
+  display: inline-block;
+  width: 1px;
+  position: relative;
+  height: 100%;
+}
+
+.current_usage_household {
+  background-color: rgba(0, 0, 255, 0.603);
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+}
+
+.current_usage_heat_pump {
+  background-color: rgba(255, 0, 0, 0.596);
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+}
+
+.current_photovoltaik {
+  background-color: rgba(0, 128, 0, 0.61);
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+}
+
 .meter {
   border: 1px solid black;
   border-radius: 5px;
