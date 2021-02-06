@@ -106,8 +106,15 @@ function simulate_one_section(){
 
   current_need = current_photovoltaik - current_usage_household - current_usage_heat_pump
 
+  battery_charge = false;
+  battery_discharge = false;
   if (battery + current_need/1000 >= 0 && battery + current_need/1000 <= battery_max_size){
     battery = battery + current_need/1000;
+    if(current_need < 0){
+      battery_discharge = true;
+    }else{
+      battery_charge = true;
+    }
     current_need = 0;
   }
 
@@ -140,7 +147,7 @@ function simulate_one_section(){
 
   $('input[name=kw_passed]').val(parseInt(pointer/(24*60/time_resolution*7)));
 
-  fill_chart(current_photovoltaik, current_usage_household, current_usage_heat_pump);
+  fill_chart(current_photovoltaik, current_usage_household, current_usage_heat_pump, battery_charge, battery_discharge);
 
   setTimeout(function(){ simulate_one_section(); },0);
 }
@@ -162,7 +169,7 @@ function end_simulation(){
 
   pointer = 0;
 
-  $('.results').append('<div class="one_result">Kosten: '+(total_export_cost-total_import_revenue)+' €<br>Photovoltaik: '+$('input[name=photovoltaik_kwp]').val()+' kWp<br>Battery size: '+$('input[name=battery_kwh]').val()+' kWh<br>Household usage: '+household_consumption_year+' kWh<br>Heat Pump usage: '+heat_pump_consumption_year+' kWh<br>produced kwh: '+ Math.round(total_photovoltaik/1000)+' kWh<br>used kwh: '+ Math.round(total_household_consumption/1000)+' kWh<br>imported kwh: '+ Math.round(total_import/1000)+' kWh<br>exported kwh: '+ Math.round(total_export/1000)+' kWh<br>Self consumption rate: '+Math.round(100-(total_export/total_photovoltaik*100))+'%</div>');
+  $('.results').append('<div class="one_result">Cost every year: '+(total_export_cost-total_import_revenue)+' €<br>Photovoltaik: '+$('input[name=photovoltaik_kwp]').val()+' kWp<br>Battery size: '+$('input[name=battery_kwh]').val()+' kWh<br>Household usage: '+household_consumption_year+' kWh<br>Heat Pump usage: '+heat_pump_consumption_year+' kWh<br>produced kwh: '+ Math.round(total_photovoltaik/1000)+' kWh<br>used kwh: '+ Math.round(total_household_consumption/1000)+' kWh<br>imported kwh: '+ Math.round(total_import/1000)+' kWh<br>exported kwh: '+ Math.round(total_export/1000)+' kWh<br>Self consumption rate: '+Math.round(100-(total_export/total_photovoltaik*100))+'%</div>');
 
   total_photovoltaik = 0;
   total_household_consumption = 0;
@@ -171,7 +178,22 @@ function end_simulation(){
   total_import = 0;
 }
 
-function fill_chart(current_photovoltaik, current_usage_household, current_usage_heat_pump){
-  var current_need = current_photovoltaik - current_usage_household - current_usage_heat_pump;
-  $('.chart').append('<div class="one_line"><div class="current_usage_heat_pump" style="height:'+current_usage_heat_pump/50+'px"></div><div class="current_usage_household" style="height:'+current_usage_household/50+'px"></div><div class="current_photovoltaik" style="height:'+current_photovoltaik/50+'px"></div></div>');
+function fill_chart(current_photovoltaik, current_usage_household, current_usage_heat_pump, battery_charge, battery_discharge){
+  var battery_charge_class = '';
+  var battery_discharge_class = '';
+
+  if(battery_charge){
+    battery_charge_class = ' battery_charge';
+  }
+
+  if(battery_discharge){
+    battery_discharge_class = ' battery_discharge';
+  }
+  
+  var content = '<div class="one_line">';
+  content += '<div class="current_usage_heat_pump'+battery_discharge_class+'" style="height:'+current_usage_heat_pump/50+'px"></div>'
+  content += '<div class="current_usage_household'+battery_discharge_class+'" style="height:'+current_usage_household/50+'px"></div>'
+  content += '<div class="current_photovoltaik'+battery_charge_class+'" style="height:'+current_photovoltaik/50+'px"></div>';
+  content += '</div>'
+  $('.chart').append(content);
 }

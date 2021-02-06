@@ -105,12 +105,16 @@
         Household usage
         <input type="file" name="file" id="household_consumption">
       </div>
-      <div class="chart">
-
-      </div>
+      <div class="chart"></div>
+      Legend:
+      <div class="color_box" style="background-color: blue"></div> Household consumption
+      <div class="color_box" style="background-color: yellow"></div> Photovoltaik 
+      <div class="color_box" style="background-color: green"></div> Battery charge
+      <div class="color_box" style="background-color: red"></div> Heat pump
+      <div class="color_box" style="background-color: turquoise"></div> Battery Discharge
       <br>
       <input type="submit" value="start simulation" onclick="start_simulation();return false;">
-      <input type="checkbox" checked id="fast_mode"> fast simulation (only simulates one day per month)
+      <input type="checkbox" checked id="fast_mode"> fast simulation (only simulates one day every month)
       <br>
       <br>
       elecritity cost:

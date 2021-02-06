@@ -55,10 +55,18 @@ body {
 }
 
 .current_photovoltaik {
-  background-color: rgba(0, 128, 0, 0.61);
+  background-color: rgba(255, 238, 0, 0.61);
   position: absolute;
   bottom: 0;
   width: 1px;
+}
+
+.battery_charge{
+  background-color: rgba(0, 128, 0, 0.61) !important;
+}
+
+.battery_discharge{
+  background-color: rgba(0, 255, 200, 0.61) !important;
 }
 
 .meter {
@@ -95,5 +103,11 @@ body {
   background-color: #eee;
   padding: 5px;
   border-radius: 5px;
+  display: inline-block;
+}
+
+.color_box {
+  width: 10px;
+  height: 10px;
   display: inline-block;
 }
